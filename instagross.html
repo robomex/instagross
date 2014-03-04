@@ -1,0 +1,26 @@
+<head>
+	<meta charset=utf-8 />
+	<title>Instagross</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+	<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
+</head>
+
+<body>
+  {{> hello}}
+</body>
+
+<template name="hello">
+ 	<h1>Hello World!</h1>
+ 	{{> myMap}}
+ 	<input type="button" value="Click" />
+ 	<!--<script>
+		var map = L.mapbox.map('map', 'robomex.he6o03jb');	
+	</script>-->
+</template>
+
+<template name="myMap">
+	{{#constant}}
+		<div id='map'></div>
+	{{/constant}}
+</template>
