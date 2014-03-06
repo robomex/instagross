@@ -12,11 +12,10 @@ Template.myMap.created = function() {
 				var latLng = L.latLng(data[i].location.latitude, data[i].location.longitude);
 				var instaMarker = L.marker(latLng).addTo(mapa).bindPopup(popupContent).openPopup();
 				var popupContent = '<img class="popupPhoto" src="'+ data[i].images.standard_resolution.url 
-				+'"/><br/>'+ '<div class="userInfo">'+ '<a href="http://instagram.com/'+ data[i].username+
+				+'"/><br/>'+ '<div class="userInfo">'+ '<a href="http://instagram.com/'+ data[i].user.username +
 				'" target="_blank">' + '<img class="profilePicture" src="'+ data[i].user.profile_picture +'"/>'
-				+ '<span class="popupText">@'+ data[i].username + '</span>'+ '</a>' +
+				+ '<span class="popupText">@'+ data[i].user.username + '</span>'+ '</a>' +
 				'<p class="caption">'+ data[i].caption + '</p>'+ '</div>';
-				//L.marker.;
 			};
 		};
 
@@ -25,8 +24,6 @@ Template.myMap.created = function() {
 			if (json.meta.code == 200) {
 				var show = json.data;
 				placeInstaMarkers(show, map); //hmmm - not sure which map it's referring to
-				Session.set('photoset', show); //css i suspect
-				$(event.target.children[1]).hide(); //no fuckin' clue
 			} else {
 				alert("Instagram API limit exceeded - yo, please login to instagrimy with Instagram to see more shit");
 			};
