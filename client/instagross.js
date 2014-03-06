@@ -23,7 +23,7 @@ Template.myMap.created = function() {
 		function jsonLoad (json) {
 			if (json.meta.code == 200) {
 				var show = json.data;
-				placeInstaMarkers(show, map); //hmmm - not sure which map it's referring to
+				placeInstaMarkers(show, map);
 			} else {
 				alert("Instagram API limit exceeded - yo, please login to instagrimy with Instagram to see more shit");
 			};
