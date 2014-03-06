@@ -10,7 +10,13 @@ Template.myMap.created = function() {
 		function placeInstaMarkers(data, map) {
 			for (var i = 0; i < data.length; i++) {
 				var latLng = L.latLng(data[i].location.latitude, data[i].location.longitude);
-				var instaMarker = L.marker(latLng).addTo(mapa);
+				var instaMarker = L.marker(latLng).addTo(mapa).bindPopup(popupContent).openPopup();
+				var popupContent = '<img class="popupPhoto" src="'+ data[i].images.standard_resolution.url 
+				+'"/><br/>'+ '<div class="userInfo">'+ '<a href="http://instagram.com/'+ data[i].username+
+				'" target="_blank">' + '<img class="profilePicture" src="'+ data[i].user.profile_picture +'"/>'
+				+ '<span class="popupText">@'+ data[i].username + '</span>'+ '</a>' +
+				'<p class="caption">'+ data[i].caption + '</p>'+ '</div>';
+				//L.marker.;
 			};
 		};
 
