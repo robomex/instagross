@@ -7,3 +7,6 @@ standard-app-packages
 autopublish
 insecure
 preserve-inputs
+accounts-instagram-6
+accounts-ui
+accounts-base
