@@ -29,12 +29,69 @@ Template.myMap.created = function() {
 			};
 		};
 
+		//Get geolocation
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(errorFunction);
+		} else {
+			alert('Use a browser that supports the Geolocation API');
+		}
+
+		//user did not enable geolcation, defaulted to Chicago
+		function errorFunction(json) {
+			var latLng = L.latLng(41.9, -87.7);
+			getPhotos(returnMatched(json));
+		};
+
+
+
+		function matchToFB (json) {
+			if (json.meta.code == 200) {
+				for (var i = 0; i < json.length; i++) {
+					$.ajax({
+						url: 'https://graph.facebook.com/search?q=' + json[i].aka_name.subString(0,2) + '&type=place&center=' + json[i].latitude + ',' + json[i].longitude + '&distance=100&access_token=253560938148674|tKIJElzYjmFRbNRdgG4DVyO8Iuk?callback=?',
+						dataType: 'json',
+						success: errorFunction,
+						statusCode: {
+							500: function() {
+								alert('Sorry, yo, service is down.');
+							}
+						}
+					});
+				};
+			} else {
+				alert("Something's broke, yo.");
+			};
+		};
+
+
+		var getFailures = function () {
+			$.ajax({
+				url: 'https://data.cityofchicago.org/resource/4ijn-s7e5.json?$select=aka_name,latitude,longitude&results=Fail&facility_type=restaurant&$order=inspection_date%20desc&$limit=100?callback=?',
+				datatype: 'json',
+				success: matchToFB,
+				statusCode: {
+					500: function() {
+						alert('Sorry, yo, service is temporarily down.');
+					}
+				}
+			});
+		};
+
+		function returnMatched (fbJson) {
+			//if (json.meta.code == 200) {
+				return fbJson;
+			//} else {
+			//	alert("Instagram API limit exceeded - you need to sign in to instagrimy for this shit to work");
+			//};
+		};
+
+
 		//ajax call to Instagram API
 		var getPhotos = function (data) {
 			$.ajax({
 				url: 'https://api.instagram.com/v1/media/search?callback=?',
 				dataType: 'json',
-				data: {'order': '-createdAt', lat: data.lat, lng: data.lng, distance:data.distance, client_id: INSTAID, access_token:ACCESSTOKEN},
+				data: {'order': '-createdAt', facebook_places_id: data.id, client_id: INSTAID, access_token:ACCESSTOKEN},
 				success: jsonLoad,
 				statusCode: {
 					500: function() {
@@ -44,18 +101,6 @@ Template.myMap.created = function() {
 			});
 		};
 
-		//Get geolocation
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(errorFunction);
-		} else {
-			alert('Use a browser that supports the Geolocation API');
-		}
-
-		//user did not enable geolcation, defaulted to Chicago
-		function errorFunction(success) {
-			var latLng = L.latLng(41.9, -87.7);
-			getPhotos({lat: latLng.lat, lng: latLng.lng, distance:'3000'});
-		};
 	});
 };
 
